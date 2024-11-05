@@ -1,4 +1,5 @@
 ﻿using CustomerService.Domain.DomainObjects;
+using CustomerService.Domain.Tools;
 
 namespace CustomerService.Domain.ValueObjects
 {
@@ -12,10 +13,10 @@ namespace CustomerService.Domain.ValueObjects
             Number = number;
         }
         protected Cpf() { }
-        public static string JustNumbers(string input) => new(input.Where(char.IsDigit).ToArray());
+
         public static bool Validate(string number)
         {
-            number = JustNumbers(number);
+            number = number.JustNumbers(number);
 
             if (number.Length > 11)
                 return false;

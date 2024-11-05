@@ -1,4 +1,5 @@
 ﻿using CustomerService.Domain.Entities;
+using CustomerService.Domain.Events;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomerService.Infrastructure.Persistence
@@ -16,6 +17,8 @@ namespace CustomerService.Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Ignore<Event>();
+
             foreach (var property in modelBuilder.Model.GetEntityTypes()
                 .SelectMany(e => e.GetProperties().Where(p => p.ClrType == typeof(string))))
                 property.SetColumnType("varchar(160)");

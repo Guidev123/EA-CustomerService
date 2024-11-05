@@ -1,5 +1,4 @@
-﻿using CustomerService.Application;
-using CustomerService.Infrastructure;
+﻿using CustomerService.Infrastructure;
 
 namespace CustomerService.API.Middlewares
 {
@@ -8,7 +7,6 @@ namespace CustomerService.API.Middlewares
         public static void AddMiddlewares(this WebApplicationBuilder builder)
         {
             builder.Services.AddInfrastructure(builder.Configuration);
-            builder.Services.AddApplication();
         }
     }
 }

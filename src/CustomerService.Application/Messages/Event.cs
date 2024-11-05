@@ -1,6 +1,6 @@
-﻿using MediatR;
+using MediatR;
 
-namespace CustomerService.Domain.Events
+namespace CustomerService.Application.Messages
 {
     public abstract class Event : Message, INotification
     {

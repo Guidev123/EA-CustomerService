@@ -1,10 +1,10 @@
-﻿using CustomerService.Application.Messages;
+﻿using EA.CommonLib.MessageBus.Integration;
 
-namespace CustomerService.Application.Commands.RegisterCustomer
+namespace CustomerService.Application.IntegrationEvents
 {
-    public class RegisterCustomerCommand : Command
+    public class RegisteredUserIntegrationEvent : IntegrationEvent
     {
-        public RegisterCustomerCommand(Guid id, string name, string email, string cpf)
+        public RegisteredUserIntegrationEvent(Guid id, string name, string email, string cpf)
         {
             AggregateId = id;
             Id = id;
@@ -17,7 +17,5 @@ namespace CustomerService.Application.Commands.RegisterCustomer
         public string Name { get; private set; }
         public string Email { get; private set; }
         public string Cpf { get; private set; }
-
-        public override bool IsValid() => new RegisterCustomerValidation().Validate(this).IsValid;
     }
 }

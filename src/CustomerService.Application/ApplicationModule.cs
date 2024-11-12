@@ -1,21 +1,31 @@
-﻿using CustomerService.Application.Commands.RegisterCustomer;
-using FluentValidation.Results;
-using MediatR;
+﻿using CustomerService.Application.BackgroundServices;
+using CustomerService.Infrastructure.MessageBus.Configuration;
+using EA.CommonLib.Mediator;
+using EA.CommonLib.MessageBus;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CustomerService.Application
 {
     public static class ApplicationModule
     {
-        public static void AddApplication(this IServiceCollection services)
+        public static void AddApplication(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddMediator();
+            services.AddMessageBusConfiguration(configuration);
+        }
+
+        public static void AddMediator(this IServiceCollection services)
         {
             services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(ApplicationModule).Assembly));
-            services.AddScoped<IRequestHandler<RegisterCustomerCommand, ValidationResult>, RegisterCustomerHandler>();
+            services.AddScoped<IMediatorHandler, MediatorHandler>();
+        }
+
+        public static void AddMessageBusConfiguration(this IServiceCollection services,
+                                                           IConfiguration configuration)
+        {
+            services.AddMessageBus(configuration.GetMessageQueueConnection("MessageBus"));
+            services.AddHostedService<CustomerBackgroundService>();
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using CustomerService.Application.BackgroundServices;
-using CustomerService.Infrastructure.MessageBus.Configuration;
 using EA.CommonLib.Mediator;
 using EA.CommonLib.MessageBus;
 using Microsoft.Extensions.Configuration;

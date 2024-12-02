@@ -1,8 +1,8 @@
 ﻿using CustomerService.Application.Commands.CreateCustomer;
-using CustomerService.Application.IntegrationEvents;
 using EA.CommonLib.Mediator;
 using EA.CommonLib.MessageBus;
 using EA.CommonLib.MessageBus.Integration;
+using EA.CommonLib.MessageBus.Integration.RegisteredCustomer;
 using FluentValidation.Results;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -12,12 +12,12 @@ namespace CustomerService.Application.BackgroundServices
     public class CustomerBackgroundService(IServiceProvider serviceProvider, IMessageBus bus)
                : BackgroundService
     {
-        private readonly IMessageBus _bus = bus;
         private readonly IServiceProvider _serviceProvider = serviceProvider;
+        private readonly IMessageBus _bus = bus;
 
         private void SetResponse()
         {
-            _bus.RespondAsync<RegisteredUserIntegrationEvent, ResponseMessage>(RegisterCustomer);
+            _bus.RespondAsync<RegisteredUserIntegrationEvent, ResponseMessage>(async req => await RegisterCustomer(req));
             _bus.AdvancedBus.Connected += OnConnect!;
         }
 

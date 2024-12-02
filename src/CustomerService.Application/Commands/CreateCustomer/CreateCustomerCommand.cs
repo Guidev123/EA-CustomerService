@@ -1,5 +1,4 @@
 ﻿using EA.CommonLib.Messages;
-using MediatR;
 
 namespace CustomerService.Application.Commands.CreateCustomer
 {
@@ -11,6 +10,7 @@ namespace CustomerService.Application.Commands.CreateCustomer
             Name = name;
             Email = email;
             Cpf = cpf;
+            AggregateId = id;
         }
 
         public Guid Id { get; private set; }
@@ -18,6 +18,10 @@ namespace CustomerService.Application.Commands.CreateCustomer
         public string Email { get; private set; }
         public string Cpf { get; private set; }
 
-        public override bool IsValid() => new CreateCustomerValidation().Validate(this).IsValid;
+        public override bool IsValid()
+        {
+            ValidationResult = new CreateCustomerValidation().Validate(this);
+            return ValidationResult.IsValid;
+        }
     }
 }

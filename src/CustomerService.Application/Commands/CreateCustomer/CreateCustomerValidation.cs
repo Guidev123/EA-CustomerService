@@ -16,11 +16,11 @@ namespace CustomerService.Application.Commands.CreateCustomer
                 .WithMessage("Name can not be empty");
 
             RuleFor(c => c.Cpf)
-                .Must(GetEmailValidation)
+                .Must(GetCpfValidation)
                 .WithMessage("Invalid CPF");
 
             RuleFor(c => c.Email)
-                .Must(GetCpfValidation)
+                .Must(GetEmailValidation)
                 .WithMessage("Invalid E-mail");
         }
 

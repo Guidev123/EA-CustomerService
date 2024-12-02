@@ -1,11 +1,12 @@
 ﻿using CustomerService.Domain.Entities;
 using CustomerService.Domain.Repositories;
+using EA.CommonLib.Messages;
 using FluentValidation.Results;
 using MediatR;
 
 namespace CustomerService.Application.Commands.CreateCustomer
 {
-    public class CreateCustomerHandler(ICustomerRepository customerRepository) : IRequestHandler<CreateCustomerCommand, ValidationResult>
+    public class CreateCustomerHandler(ICustomerRepository customerRepository) : CommandHandler, IRequestHandler<CreateCustomerCommand, ValidationResult>
     {
         private readonly ICustomerRepository _customerRepository = customerRepository;
         public async Task<ValidationResult> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
@@ -16,7 +17,7 @@ namespace CustomerService.Application.Commands.CreateCustomer
             var customerExists = await _customerRepository.GetByCpf(customer.Cpf.Number);
             if(customerExists is not null)
             {
-                request.ValidationResult.Errors.Add(new ValidationFailure("Cpf", "Customer already exists."));
+                AddError("Customer already exists");
                 return request.ValidationResult;
             }
 

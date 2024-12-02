@@ -1,4 +1,4 @@
-﻿using CustomerService.Domain.DomainObjects;
+﻿using EA.CommonLib.DomainObjects;
 using System.Text.RegularExpressions;
 
 namespace CustomerService.Domain.ValueObjects

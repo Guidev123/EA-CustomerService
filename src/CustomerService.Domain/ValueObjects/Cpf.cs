@@ -1,4 +1,4 @@
-﻿using CustomerService.Domain.DomainObjects;
+﻿using EA.CommonLib.DomainObjects;
 
 namespace CustomerService.Domain.ValueObjects
 {

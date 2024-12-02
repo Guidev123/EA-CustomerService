@@ -4,8 +4,10 @@ namespace CustomerService.Domain.Repositories
 {
     public interface ICustomerRepository
     {
-        Task CreateCustomer(Customer customer);
-        Task<List<Customer>> GetAll();  
-        Task<Customer?> GetByCpf(string cpf);
+        Task<List<Customer>> GetAllAsync();  
+        Task<Customer?> GetByCpfAsync(string cpf);
+        Task<Customer?> GetByIdAsync(Guid id);
+        Task CreateAsync(Customer customer);
+        Task UpdateAsync(Customer customer);
     }
 }

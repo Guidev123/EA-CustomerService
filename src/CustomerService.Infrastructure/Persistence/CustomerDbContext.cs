@@ -1,4 +1,6 @@
 ﻿using CustomerService.Domain.Entities;
+using EA.CommonLib.Messages;
+using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomerService.Infrastructure.Persistence
@@ -16,6 +18,9 @@ namespace CustomerService.Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Ignore<ValidationResult>();
+            modelBuilder.Ignore<Event>();
+
             foreach (var property in modelBuilder.Model.GetEntityTypes()
                 .SelectMany(e => e.GetProperties().Where(p => p.ClrType == typeof(string))))
                 property.SetColumnType("varchar(160)");

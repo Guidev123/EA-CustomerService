@@ -1,6 +1,6 @@
-﻿using CustomerService.Domain.DomainObjects;
-using CustomerService.Domain.Enums;
+﻿using CustomerService.Domain.Enums;
 using CustomerService.Domain.ValueObjects;
+using EA.CommonLib.DomainObjects;
 
 namespace CustomerService.Domain.Entities
 {
@@ -25,5 +25,6 @@ namespace CustomerService.Domain.Entities
         public Address Address { get; private set; } = null!;
         public void ChangeEmail(string email) => Email = new Email(email);
         public void SetAddress(Address address) => Address = address;
+        public void SetAsDeleted() => IsDeleted = true;
     }
 }

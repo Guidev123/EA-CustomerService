@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CustomerService.Infrastructure.Persistence.Repositories
 {
-    public class CustomerRepository(CustomerDbContext context) : ICustomerRepository
+    public class CustomerRepository(CustomerDbContext context) : ICustomerRepository, IDisposable
     {
         private readonly CustomerDbContext _context = context;
 
@@ -34,5 +34,7 @@ namespace CustomerService.Infrastructure.Persistence.Repositories
             await _context.AddAsync(address);
             await _context.SaveChangesAsync();
         }
+
+        public void Dispose() => _context.Dispose();
     }
 }

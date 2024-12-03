@@ -28,5 +28,11 @@ namespace CustomerService.Infrastructure.Persistence.Repositories
             _context.Update(customer);
             await _context.SaveChangesAsync();
         }
+
+        public async Task AddAddressAsync(Address address)
+        {
+            await _context.AddAsync(address);
+            await _context.SaveChangesAsync();
+        }
     }
 }

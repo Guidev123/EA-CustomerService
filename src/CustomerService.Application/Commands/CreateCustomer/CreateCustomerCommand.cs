@@ -2,7 +2,7 @@
 
 namespace CustomerService.Application.Commands.CreateCustomer
 {
-    public class CreateCustomerCommand : Command
+    public class CreateCustomerCommand : Command<CreateCustomerCommand>
     {
         public CreateCustomerCommand(Guid id, string name, string email, string cpf)
         {

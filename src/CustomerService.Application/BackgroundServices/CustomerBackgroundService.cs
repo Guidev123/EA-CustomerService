@@ -5,7 +5,7 @@ using EA.CommonLib.MessageBus;
 using EA.CommonLib.MessageBus.Integration;
 using EA.CommonLib.MessageBus.Integration.DeleteCustomer;
 using EA.CommonLib.MessageBus.Integration.RegisteredCustomer;
-using FluentValidation.Results;
+using EA.CommonLib.Responses;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -19,8 +19,8 @@ namespace CustomerService.Application.BackgroundServices
 
         private void SetResponse()
         {
-            _bus.RespondAsync<RegisteredUserIntegrationEvent, ResponseMessage>(async req => await RegisterCustomer(req));
-            _bus.RespondAsync<DeleteCustomerIntegrationEvent, ResponseMessage>(async req => await DeleteCustomer(req));
+            _bus.RespondAsync<RegisteredUserIntegrationEvent, ResponseMessage>(RegisterCustomer);
+            _bus.RespondAsync<DeleteCustomerIntegrationEvent, ResponseMessage>(DeleteCustomer);
             _bus.AdvancedBus.Connected += OnConnect!;
         }
 
@@ -35,7 +35,7 @@ namespace CustomerService.Application.BackgroundServices
         private async Task<ResponseMessage> RegisterCustomer(RegisteredUserIntegrationEvent message)
         {
             var clientCommand = new CreateCustomerCommand(message.Id, message.Name, message.Email, message.Cpf);
-            ValidationResult success;
+            Response<CreateCustomerCommand> success;
             using (var scope = _serviceProvider.CreateScope())
             {
                 var mediator = scope.ServiceProvider.GetRequiredService<IMediatorHandler>();
@@ -43,13 +43,13 @@ namespace CustomerService.Application.BackgroundServices
                 success = await mediator.SendCommand(clientCommand);
             }
 
-            return new ResponseMessage(success);
+            return new ResponseMessage(success.Data!.ValidationResult!);
         }
 
         private async Task<ResponseMessage> DeleteCustomer(DeleteCustomerIntegrationEvent message)
         {
             var clientCommand = new DeleteCustomerCommand(message.Id);
-            ValidationResult success;
+            Response<DeleteCustomerCommand> success;
             using (var scope = _serviceProvider.CreateScope())
             {
                 var mediator = scope.ServiceProvider.GetRequiredService<IMediatorHandler>();
@@ -57,7 +57,7 @@ namespace CustomerService.Application.BackgroundServices
                 success = await mediator.SendCommand(clientCommand);
             }
 
-            return new ResponseMessage(success);
+            return new ResponseMessage(success.Data!.ValidationResult!);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace CustomerService.Application.Commands.DeleteCustomer
 {
-    public class DeleteCustomerCommand : Command
+    public class DeleteCustomerCommand : Command<DeleteCustomerCommand>
     {
         public DeleteCustomerCommand(Guid id)
         {

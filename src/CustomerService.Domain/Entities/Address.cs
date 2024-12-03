@@ -4,9 +4,9 @@ namespace CustomerService.Domain.Entities
 {
     public class Address : Entity
     {
-        public Address(string street, string number, string additionalInfo,
+        public Address(Guid customerId, string street, string number, string additionalInfo,
                        string neighborhood, string zipCode, string city,
-                       string state, Guid customerId)
+                       string state)
         {
             Street = street;
             Number = number;

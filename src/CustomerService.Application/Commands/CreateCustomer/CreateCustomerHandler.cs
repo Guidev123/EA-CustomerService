@@ -1,30 +1,35 @@
-﻿using CustomerService.Domain.Entities;
+﻿using CustomerService.Application.Commands.AddAddress;
+using CustomerService.Application.Mappers;
 using CustomerService.Domain.Repositories;
 using EA.CommonLib.Messages;
-using FluentValidation.Results;
+using EA.CommonLib.Responses;
 using MediatR;
 
 namespace CustomerService.Application.Commands.CreateCustomer
 {
     public class CreateCustomerHandler(ICustomerRepository customerRepository)
-               : CommandHandler, IRequestHandler<CreateCustomerCommand, ValidationResult>
+               : CommandHandler, IRequestHandler<CreateCustomerCommand, Response<CreateCustomerCommand>>
     {
         private readonly ICustomerRepository _customerRepository = customerRepository;
-        public async Task<ValidationResult> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
+        public async Task<Response<CreateCustomerCommand>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
         {
-            if(!request.IsValid()) return request.ValidationResult;
+            if (!request.IsValid())
+            {
+                return new Response<CreateCustomerCommand>(request, 400, GetAllErrors(request.ValidationResult!));
+            }
 
-            var customer = new Customer(request.Id, request.Name, request.Email, request.Cpf);
+            var customer = CustomerMappers.MapToCustomer(request);
+
             var customerExists = await _customerRepository.GetByCpfAsync(customer.Cpf.Number);
             if(customerExists is not null)
             {
-                AddError("Customer already exists");
-                return request.ValidationResult;
+                AddError(request.ValidationResult!, "Customer already exists");
+                return new Response<CreateCustomerCommand>(request, 400, GetAllErrors(request.ValidationResult!));
             }
 
             await _customerRepository.CreateAsync(customer);
 
-            return request.ValidationResult;
+            return new Response<CreateCustomerCommand>(request, 201, "Success");
         }
     }
 }

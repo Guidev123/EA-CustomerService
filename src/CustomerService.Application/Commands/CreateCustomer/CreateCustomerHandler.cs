@@ -1,4 +1,4 @@
-﻿using CustomerService.Application.Commands.AddAddress;
+﻿using CustomerService.Application.Events.CreatedCustomer;
 using CustomerService.Application.Mappers;
 using CustomerService.Domain.Repositories;
 using EA.CommonLib.Messages;
@@ -27,7 +27,11 @@ namespace CustomerService.Application.Commands.CreateCustomer
                 return new Response<CreateCustomerCommand>(request, 400, GetAllErrors(request.ValidationResult!));
             }
 
+            customer.AddEvent(new CreatedCustomerEvent(customer.Name, customer.Email.Address));
+
             await _customerRepository.CreateAsync(customer);
+
+
 
             return new Response<CreateCustomerCommand>(request, 201, "Success");
         }

@@ -1,7 +1,9 @@
 ﻿using CustomerService.Application.Commands.CreateCustomer;
+using CustomerService.Application.Commands.DeleteCustomer;
 using EA.CommonLib.Mediator;
 using EA.CommonLib.MessageBus;
 using EA.CommonLib.MessageBus.Integration;
+using EA.CommonLib.MessageBus.Integration.DeleteCustomer;
 using EA.CommonLib.MessageBus.Integration.RegisteredCustomer;
 using FluentValidation.Results;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +20,7 @@ namespace CustomerService.Application.BackgroundServices
         private void SetResponse()
         {
             _bus.RespondAsync<RegisteredUserIntegrationEvent, ResponseMessage>(async req => await RegisterCustomer(req));
+            _bus.RespondAsync<DeleteCustomerIntegrationEvent, ResponseMessage>(async req => await DeleteCustomer(req));
             _bus.AdvancedBus.Connected += OnConnect!;
         }
 
@@ -32,6 +35,20 @@ namespace CustomerService.Application.BackgroundServices
         private async Task<ResponseMessage> RegisterCustomer(RegisteredUserIntegrationEvent message)
         {
             var clientCommand = new CreateCustomerCommand(message.Id, message.Name, message.Email, message.Cpf);
+            ValidationResult success;
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediatorHandler>();
+
+                success = await mediator.SendCommand(clientCommand);
+            }
+
+            return new ResponseMessage(success);
+        }
+
+        private async Task<ResponseMessage> DeleteCustomer(DeleteCustomerIntegrationEvent message)
+        {
+            var clientCommand = new DeleteCustomerCommand(message.Id);
             ValidationResult success;
             using (var scope = _serviceProvider.CreateScope())
             {

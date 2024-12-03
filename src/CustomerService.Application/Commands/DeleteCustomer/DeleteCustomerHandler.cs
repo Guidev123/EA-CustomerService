@@ -15,7 +15,7 @@ namespace CustomerService.Application.Commands.DeleteCustomer
             if (customer is null)
             {
                 AddError(request.ValidationResult!, "Customer not found");
-                return new Response<DeleteCustomerCommand>(request, 400, GetAllErrors(request.ValidationResult!));
+                return new Response<DeleteCustomerCommand>(request, 400, "Error", GetAllErrors(request.ValidationResult!));
             }
             customer.SetAsDeleted();
 

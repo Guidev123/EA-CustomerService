@@ -15,7 +15,7 @@ namespace CustomerService.Application.Commands.CreateCustomer
         {
             if (!request.IsValid())
             {
-                return new Response<CreateCustomerCommand>(request, 400, GetAllErrors(request.ValidationResult!));
+                return new Response<CreateCustomerCommand>(request, 400, "Error", GetAllErrors(request.ValidationResult!));
             }
 
             var customer = CustomerMappers.MapToCustomer(request);
@@ -24,7 +24,7 @@ namespace CustomerService.Application.Commands.CreateCustomer
             if(customerExists is not null)
             {
                 AddError(request.ValidationResult!, "Customer already exists");
-                return new Response<CreateCustomerCommand>(request, 400, GetAllErrors(request.ValidationResult!));
+                return new Response<CreateCustomerCommand>(request, 400, "Error", GetAllErrors(request.ValidationResult!));
             }
 
             customer.AddEvent(new CreatedCustomerEvent(customer.Name, customer.Email.Address));

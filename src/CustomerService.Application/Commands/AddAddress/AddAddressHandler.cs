@@ -15,7 +15,7 @@ namespace CustomerService.Application.Commands.AddAddress
         {
             if (!request.IsValid())
             {
-                return new Response<AddAddressCommand>(request, 400, GetAllErrors(request.ValidationResult!));
+                return new Response<AddAddressCommand>(request, 400, "Error", GetAllErrors(request.ValidationResult!));
             }
 
             var address = CustomerMappers.MapToAddress(request);
@@ -24,7 +24,7 @@ namespace CustomerService.Application.Commands.AddAddress
             if (customerExists is null)
             {
                 AddError(request.ValidationResult!, "Customer not found");
-                return new Response<AddAddressCommand>(request, 400, GetAllErrors(request.ValidationResult!));
+                return new Response<AddAddressCommand>(request, 400, "Error", GetAllErrors(request.ValidationResult!));
             }
 
             await _customerRepository.AddAddressAsync(address);

@@ -29,6 +29,13 @@ namespace CustomerService.Application.Commands.AddAddress
 
             await _customerRepository.AddAddressAsync(address);
 
+            var persistData = await _customerRepository.UnitOfWork.CommitAsync();
+            if (!persistData)
+            {
+                AddError(request.ValidationResult!, "Fail to persist data");
+                return new Response<AddAddressCommand>(request, 400, "Error", GetAllErrors(request.ValidationResult!));
+            }
+
             return new Response<AddAddressCommand>(request, 201, "Success");
         }
     }

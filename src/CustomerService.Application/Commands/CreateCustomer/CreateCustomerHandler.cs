@@ -31,7 +31,12 @@ namespace CustomerService.Application.Commands.CreateCustomer
 
             await _customerRepository.CreateAsync(customer);
 
-
+            var persistData = await _customerRepository.UnitOfWork.CommitAsync();
+            if (!persistData)
+            {
+                AddError(request.ValidationResult!, "Fail to persist data");
+                return new Response<CreateCustomerCommand>(request, 400, "Error", GetAllErrors(request.ValidationResult!));
+            }
 
             return new Response<CreateCustomerCommand>(request, 201, "Success");
         }

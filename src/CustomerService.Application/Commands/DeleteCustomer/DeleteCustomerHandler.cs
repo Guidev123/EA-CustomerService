@@ -1,4 +1,5 @@
-﻿using CustomerService.Domain.Repositories;
+﻿using CustomerService.Application.Commands.CreateCustomer;
+using CustomerService.Domain.Repositories;
 using EA.CommonLib.Messages;
 using EA.CommonLib.Responses;
 using MediatR;
@@ -18,8 +19,14 @@ namespace CustomerService.Application.Commands.DeleteCustomer
                 return new Response<DeleteCustomerCommand>(request, 400, "Error", GetAllErrors(request.ValidationResult!));
             }
             customer.SetAsDeleted();
+            _customerRepository.UpdateAsync(customer);
 
-            await _customerRepository.UpdateAsync(customer);
+            var persistData = await _customerRepository.UnitOfWork.CommitAsync();
+            if (!persistData)
+            {
+                AddError(request.ValidationResult!, "Fail to persist data");
+                return new Response<DeleteCustomerCommand>(request, 400, "Error", GetAllErrors(request.ValidationResult!));
+            }
 
             return new Response<DeleteCustomerCommand>(request, 204, "Success");
         }

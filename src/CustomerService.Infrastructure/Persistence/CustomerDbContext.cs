@@ -1,18 +1,22 @@
 ﻿using CustomerService.Domain.Entities;
+using CustomerService.Domain.Repositories;
+using EA.CommonLib.Mediator;
 using EA.CommonLib.Messages;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomerService.Infrastructure.Persistence
 {
-    public sealed class CustomerDbContext : DbContext
+    public sealed class CustomerDbContext : DbContext, IUnitOfWork
     {
-        public CustomerDbContext(DbContextOptions<CustomerDbContext> options) : base(options)
+        private readonly IMediatorHandler _mediatorHandler;
+        public CustomerDbContext(DbContextOptions<CustomerDbContext> options, IMediatorHandler mediatorHandler) : base(options)
         {
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
             ChangeTracker.AutoDetectChangesEnabled = false;
+            _mediatorHandler = mediatorHandler;
         }
-    
+
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Address> Address { get; set; }
 
@@ -29,6 +33,14 @@ namespace CustomerService.Infrastructure.Persistence
                 .SelectMany(e => e.GetForeignKeys())) property.DeleteBehavior = DeleteBehavior.ClientSetNull;
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CustomerDbContext).Assembly);
+        }
+        public async Task<bool> CommitAsync()
+        {
+            var success = await SaveChangesAsync() > 0;
+
+            if (success) await _mediatorHandler.PublishEvents(this);
+
+            return success;
         }
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CustomerService.Infrastructure.Persistence.Repositories
 {
-    public class CustomerRepository(CustomerDbContext context) : ICustomerRepository, IDisposable
+    public class CustomerRepository(CustomerDbContext context) : ICustomerRepository
     {
         private readonly CustomerDbContext _context = context;
 
@@ -17,24 +17,11 @@ namespace CustomerService.Infrastructure.Persistence.Repositories
         public async Task<Customer?> GetByIdAsync(Guid id) =>
             await _context.Customers.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
 
-        public async Task CreateAsync(Customer customer)
-        {
-            await _context.AddAsync(customer);
-            await _context.SaveChangesAsync();
-        }
+        public async Task CreateAsync(Customer customer) =>  await _context.AddAsync(customer);
+        public void UpdateAsync(Customer customer) => _context.Update(customer);
+        public async Task AddAddressAsync(Address address) => await _context.AddAsync(address);
 
-        public async Task UpdateAsync(Customer customer)
-        {
-            _context.Update(customer);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task AddAddressAsync(Address address)
-        {
-            await _context.AddAsync(address);
-            await _context.SaveChangesAsync();
-        }
-
-        public void Dispose() => _context.Dispose();
+        public IUnitOfWork UnitOfWork => _context;
+        public void Dispose() => _context?.Dispose();
     }
 }

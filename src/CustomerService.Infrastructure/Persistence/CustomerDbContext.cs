@@ -1,5 +1,6 @@
 ﻿using CustomerService.Domain.Entities;
 using CustomerService.Domain.Repositories;
+using CustomerService.Infrastructure.Persistence.Extensions;
 using EA.CommonLib.Mediator;
 using EA.CommonLib.Messages;
 using FluentValidation.Results;

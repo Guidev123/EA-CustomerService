@@ -1,5 +1,7 @@
-﻿using CustomerService.Application.Mappers;
+﻿using CustomerService.Application.Extensions;
+using CustomerService.Application.Mappers;
 using CustomerService.Domain.Repositories;
+using EA.CommonLib.Helpers;
 using EA.CommonLib.Messages;
 using EA.CommonLib.Responses;
 using MediatR;
@@ -15,7 +17,7 @@ namespace CustomerService.Application.Commands.AddAddress
         {
             if (!request.IsValid())
             {
-                return new Response<AddAddressCommand>(request, 400, "Error", GetAllErrors(request.ValidationResult!));
+                return new Response<AddAddressCommand>(request, 400, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult!));
             }
 
             var address = CustomerMappers.MapToAddress(request);
@@ -23,8 +25,8 @@ namespace CustomerService.Application.Commands.AddAddress
             var customerExists = await _customerRepository.GetByIdAsync(address.CustomerId);
             if (customerExists is null)
             {
-                AddError(request.ValidationResult!, "Customer not found");
-                return new Response<AddAddressCommand>(request, 400, "Error", GetAllErrors(request.ValidationResult!));
+                AddError(request.ValidationResult!, ErrorMessages.CUSTOMER_NOT_FOUND.GetDescription());
+                return new Response<AddAddressCommand>(request, 400, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult!));
             }
 
             await _customerRepository.AddAddressAsync(address);
@@ -32,11 +34,11 @@ namespace CustomerService.Application.Commands.AddAddress
             var persistData = await _customerRepository.UnitOfWork.CommitAsync();
             if (!persistData)
             {
-                AddError(request.ValidationResult!, "Fail to persist data");
-                return new Response<AddAddressCommand>(request, 400, "Error", GetAllErrors(request.ValidationResult!));
+                AddError(request.ValidationResult!, ErrorMessages.FAIL_PERSIST_DATA.GetDescription());
+                return new Response<AddAddressCommand>(request, 400, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult!));
             }
 
-            return new Response<AddAddressCommand>(request, 201, "Success");
+            return new Response<AddAddressCommand>(request, 201, ErrorMessages.SUCCESS.GetDescription());
         }
     }
 }

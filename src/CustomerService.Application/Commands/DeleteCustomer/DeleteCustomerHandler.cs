@@ -1,5 +1,6 @@
-﻿using CustomerService.Application.Commands.CreateCustomer;
+﻿using CustomerService.Application.Extensions;
 using CustomerService.Domain.Repositories;
+using EA.CommonLib.Helpers;
 using EA.CommonLib.Messages;
 using EA.CommonLib.Responses;
 using MediatR;
@@ -15,8 +16,8 @@ namespace CustomerService.Application.Commands.DeleteCustomer
             var customer = await _customerRepository.GetByIdAsync(request.Id);
             if (customer is null)
             {
-                AddError(request.ValidationResult!, "Customer not found");
-                return new Response<DeleteCustomerCommand>(request, 400, "Error", GetAllErrors(request.ValidationResult!));
+                AddError(request.ValidationResult!, ErrorMessages.CUSTOMER_NOT_FOUND.GetDescription());
+                return new Response<DeleteCustomerCommand>(request, 400, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult!));
             }
             customer.SetAsDeleted();
             _customerRepository.UpdateAsync(customer);
@@ -24,11 +25,11 @@ namespace CustomerService.Application.Commands.DeleteCustomer
             var persistData = await _customerRepository.UnitOfWork.CommitAsync();
             if (!persistData)
             {
-                AddError(request.ValidationResult!, "Fail to persist data");
-                return new Response<DeleteCustomerCommand>(request, 400, "Error", GetAllErrors(request.ValidationResult!));
+                AddError(request.ValidationResult!, ErrorMessages.FAIL_PERSIST_DATA.GetDescription());
+                return new Response<DeleteCustomerCommand>(request, 400, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult!));
             }
 
-            return new Response<DeleteCustomerCommand>(request, 204, "Success");
+            return new Response<DeleteCustomerCommand>(request, 204, ErrorMessages.SUCCESS.GetDescription());
         }
     }
 }

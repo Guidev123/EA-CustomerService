@@ -1,6 +1,8 @@
 ﻿using CustomerService.Application.Events.CreatedCustomer;
+using CustomerService.Application.Extensions;
 using CustomerService.Application.Mappers;
 using CustomerService.Domain.Repositories;
+using EA.CommonLib.Helpers;
 using EA.CommonLib.Messages;
 using EA.CommonLib.Responses;
 using MediatR;
@@ -15,7 +17,7 @@ namespace CustomerService.Application.Commands.CreateCustomer
         {
             if (!request.IsValid())
             {
-                return new Response<CreateCustomerCommand>(request, 400, "Error", GetAllErrors(request.ValidationResult!));
+                return new Response<CreateCustomerCommand>(request, 400, ErrorMessages.SUCCESS.GetDescription(), GetAllErrors(request.ValidationResult!));
             }
 
             var customer = CustomerMappers.MapToCustomer(request);
@@ -23,8 +25,8 @@ namespace CustomerService.Application.Commands.CreateCustomer
             var customerExists = await _customerRepository.GetByCpfAsync(customer.Cpf.Number);
             if(customerExists is not null)
             {
-                AddError(request.ValidationResult!, "Customer already exists");
-                return new Response<CreateCustomerCommand>(request, 400, "Error", GetAllErrors(request.ValidationResult!));
+                AddError(request.ValidationResult!, ErrorMessages.CUSTOMER_ALREADY_EXISTS.GetDescription());
+                return new Response<CreateCustomerCommand>(request, 400, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult!));
             }
 
             customer.AddEvent(new CreatedCustomerEvent(customer.Name, customer.Email.Address));
@@ -34,11 +36,11 @@ namespace CustomerService.Application.Commands.CreateCustomer
             var persistData = await _customerRepository.UnitOfWork.CommitAsync();
             if (!persistData)
             {
-                AddError(request.ValidationResult!, "Fail to persist data");
-                return new Response<CreateCustomerCommand>(request, 400, "Error", GetAllErrors(request.ValidationResult!));
+                AddError(request.ValidationResult!, ErrorMessages.FAIL_PERSIST_DATA.GetDescription());
+                return new Response<CreateCustomerCommand>(request, 400, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult!));
             }
 
-            return new Response<CreateCustomerCommand>(request, 201, "Success");
+            return new Response<CreateCustomerCommand>(request, 201, ErrorMessages.SUCCESS.GetDescription());
         }
     }
 }

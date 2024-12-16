@@ -16,8 +16,8 @@ namespace CustomerService.Application.Commands.DeleteCustomer
             var customer = await _customerRepository.GetByIdAsync(request.Id);
             if (customer is null)
             {
-                AddError(request.ValidationResult!, ErrorMessages.CUSTOMER_NOT_FOUND.GetDescription());
-                return new Response<DeleteCustomerCommand>(request, 400, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult!));
+                AddError(request.ValidationResult, ErrorMessages.CUSTOMER_NOT_FOUND.GetDescription());
+                return new Response<DeleteCustomerCommand>(request, 400, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult));
             }
             customer.SetAsDeleted();
             _customerRepository.UpdateAsync(customer);
@@ -25,8 +25,8 @@ namespace CustomerService.Application.Commands.DeleteCustomer
             var persistData = await _customerRepository.UnitOfWork.CommitAsync();
             if (!persistData)
             {
-                AddError(request.ValidationResult!, ErrorMessages.FAIL_PERSIST_DATA.GetDescription());
-                return new Response<DeleteCustomerCommand>(request, 400, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult!));
+                AddError(request.ValidationResult, ErrorMessages.FAIL_PERSIST_DATA.GetDescription());
+                return new Response<DeleteCustomerCommand>(request, 400, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult));
             }
 
             return new Response<DeleteCustomerCommand>(request, 204, ErrorMessages.SUCCESS.GetDescription());

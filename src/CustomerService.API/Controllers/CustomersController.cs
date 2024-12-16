@@ -12,11 +12,7 @@ namespace CustomerService.API.Controllers
         private readonly IMediatorHandler _mediator = mediator;
 
         [HttpPost]
-        public async Task<IResult> AddAddress(AddAddressCommand command)
-        {
-            var result = await _mediator.SendCommand(command);
-
-            return CustomResponse(result);
-        }
+        public async Task<IResult> AddAddress(AddAddressCommand command) => 
+            CustomResponse(await _mediator.SendCommand(command));
     }
 }

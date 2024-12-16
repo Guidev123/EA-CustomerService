@@ -20,12 +20,12 @@ namespace CustomerService.Application.Commands.CreateCustomer
                 return new Response<CreateCustomerCommand>(request, 400, ErrorMessages.SUCCESS.GetDescription(), GetAllErrors(request.ValidationResult!));
             }
 
-            var customer = CustomerMappers.MapToCustomer(request);
+            var customer = request.MapToCustomer();
 
             var customerExists = await _customerRepository.GetByCpfAsync(customer.Cpf.Number);
             if(customerExists is not null)
             {
-                AddError(request.ValidationResult!, ErrorMessages.CUSTOMER_ALREADY_EXISTS.GetDescription());
+                AddError(request.ValidationResult, ErrorMessages.CUSTOMER_ALREADY_EXISTS.GetDescription());
                 return new Response<CreateCustomerCommand>(request, 400, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult!));
             }
 
@@ -36,7 +36,7 @@ namespace CustomerService.Application.Commands.CreateCustomer
             var persistData = await _customerRepository.UnitOfWork.CommitAsync();
             if (!persistData)
             {
-                AddError(request.ValidationResult!, ErrorMessages.FAIL_PERSIST_DATA.GetDescription());
+                AddError(request.ValidationResult, ErrorMessages.FAIL_PERSIST_DATA.GetDescription());
                 return new Response<CreateCustomerCommand>(request, 400, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult!));
             }
 

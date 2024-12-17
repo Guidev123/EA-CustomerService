@@ -1,8 +1,8 @@
 ﻿using CustomerService.Application.Events.CreatedCustomer;
 using CustomerService.Application.Extensions;
+using CustomerService.Application.Helpers;
 using CustomerService.Application.Mappers;
 using CustomerService.Domain.Repositories;
-using EA.CommonLib.Helpers;
 using EA.CommonLib.Messages;
 using EA.CommonLib.Responses;
 using MediatR;

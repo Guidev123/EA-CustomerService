@@ -1,6 +1,6 @@
 ﻿using CustomerService.Application.Extensions;
+using CustomerService.Application.Helpers;
 using CustomerService.Domain.Repositories;
-using EA.CommonLib.Helpers;
 using EA.CommonLib.Messages;
 using EA.CommonLib.Responses;
 using MediatR;

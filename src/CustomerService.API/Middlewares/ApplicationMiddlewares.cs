@@ -77,8 +77,7 @@ namespace CustomerService.API.Middlewares
                     ValidIssuer = builder.Configuration["JsonWebTokenData:Issuer"]
                 };
             });
-            builder.Services.AddAuthorizationBuilder()
-                .AddPolicy("ADM", policy => policy.RequireRole("ADM"));
+            builder.Services.AddAuthorizationBuilder();
 
         }
 

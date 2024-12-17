@@ -9,7 +9,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\CommonLib\src\EA.CommonLib\EA.CommonLib.csproj" />
     <ProjectReference Include="..\CustomerService.Domain\CustomerService.Domain.csproj" />
-    <ProjectReference Include="..\CustomerService.Infrastructure\CustomerService.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

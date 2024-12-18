@@ -1,10 +1,10 @@
 ﻿using CustomerService.Domain.Entities;
 using CustomerService.Domain.Repositories;
 using CustomerService.Infrastructure.Persistence.Extensions;
-using EA.CommonLib.Mediator;
-using EA.CommonLib.Messages;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
+using SharedLib.Domain.Mediator;
+using SharedLib.Domain.Messages;
 
 namespace CustomerService.Infrastructure.Persistence
 {

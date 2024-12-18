@@ -2,9 +2,9 @@
 using CustomerService.Application.Helpers;
 using CustomerService.Application.Mappers;
 using CustomerService.Domain.Repositories;
-using EA.CommonLib.Messages;
-using EA.CommonLib.Responses;
 using MediatR;
+using SharedLib.Domain.Messages;
+using SharedLib.Domain.Responses;
 
 namespace CustomerService.Application.Commands.AddAddress
 {

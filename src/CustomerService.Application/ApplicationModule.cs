@@ -1,8 +1,8 @@
 ﻿using CustomerService.Application.BackgroundServices;
-using EA.CommonLib.Mediator;
-using EA.CommonLib.MessageBus;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SharedLib.Domain.Mediator;
+using SharedLib.MessageBus;
 
 namespace CustomerService.Application
 {

@@ -1,6 +1,6 @@
-﻿using EA.CommonLib.DomainObjects;
-using EA.CommonLib.Mediator;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using SharedLib.Domain.DomainObjects;
+using SharedLib.Domain.Mediator;
 
 namespace CustomerService.Infrastructure.Persistence.Extensions
 {

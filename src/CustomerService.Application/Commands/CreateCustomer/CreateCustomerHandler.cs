@@ -3,9 +3,9 @@ using CustomerService.Application.Extensions;
 using CustomerService.Application.Helpers;
 using CustomerService.Application.Mappers;
 using CustomerService.Domain.Repositories;
-using EA.CommonLib.Messages;
-using EA.CommonLib.Responses;
 using MediatR;
+using SharedLib.Domain.Messages;
+using SharedLib.Domain.Responses;
 
 namespace CustomerService.Application.Commands.CreateCustomer
 {
@@ -16,9 +16,7 @@ namespace CustomerService.Application.Commands.CreateCustomer
         public async Task<Response<CreateCustomerCommand>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
         {
             if (!request.IsValid())
-            {
                 return new Response<CreateCustomerCommand>(request, 400, ErrorMessages.SUCCESS.GetDescription(), GetAllErrors(request.ValidationResult!));
-            }
 
             var customer = request.MapToCustomer();
 

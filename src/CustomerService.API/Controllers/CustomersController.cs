@@ -1,7 +1,6 @@
 ﻿using CustomerService.Application.Commands.AddAddress;
-using EA.CommonLib.Mediator;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using SharedLib.Domain.Mediator;
 
 namespace CustomerService.API.Controllers
 {

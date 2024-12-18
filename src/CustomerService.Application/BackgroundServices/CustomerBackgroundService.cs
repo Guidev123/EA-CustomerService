@@ -1,13 +1,13 @@
 ﻿using CustomerService.Application.Commands.CreateCustomer;
 using CustomerService.Application.Commands.DeleteCustomer;
-using EA.CommonLib.Mediator;
-using EA.CommonLib.MessageBus;
-using EA.CommonLib.MessageBus.Integration;
-using EA.CommonLib.MessageBus.Integration.DeleteCustomer;
-using EA.CommonLib.MessageBus.Integration.RegisteredCustomer;
-using EA.CommonLib.Responses;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SharedLib.Domain.Mediator;
+using SharedLib.Domain.Messages.Integration;
+using SharedLib.Domain.Messages.Integration.DeletedUser;
+using SharedLib.Domain.Messages.Integration.RegisteredUser;
+using SharedLib.Domain.Responses;
+using SharedLib.MessageBus;
 
 namespace CustomerService.Application.BackgroundServices
 {
@@ -20,7 +20,7 @@ namespace CustomerService.Application.BackgroundServices
         private void SetResponse()
         {
             _bus.RespondAsync<RegisteredUserIntegrationEvent, ResponseMessage>(RegisterCustomer);
-            _bus.RespondAsync<DeleteCustomerIntegrationEvent, ResponseMessage>(DeleteCustomer);
+            _bus.RespondAsync<DeletedUserIntegrationEvent, ResponseMessage>(DeleteCustomer);
             _bus.AdvancedBus.Connected += OnConnect!;
         }
 
@@ -46,7 +46,7 @@ namespace CustomerService.Application.BackgroundServices
             return new ResponseMessage(success.Data!.ValidationResult!);
         }
 
-        private async Task<ResponseMessage> DeleteCustomer(DeleteCustomerIntegrationEvent message)
+        private async Task<ResponseMessage> DeleteCustomer(DeletedUserIntegrationEvent message)
         {
             var clientCommand = new DeleteCustomerCommand(message.Id);
             Response<DeleteCustomerCommand> success;

@@ -1,6 +1,5 @@
-﻿using EA.CommonLib.Responses;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using SharedLib.Domain.Responses;
 
 namespace CustomerService.API.Controllers
 {

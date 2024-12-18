@@ -1,4 +1,4 @@
-﻿using EA.CommonLib.DomainObjects;
+﻿using SharedLib.Domain.DomainObjects;
 
 namespace CustomerService.Domain.Entities
 {

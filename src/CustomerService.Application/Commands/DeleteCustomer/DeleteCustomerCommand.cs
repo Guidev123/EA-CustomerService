@@ -1,4 +1,4 @@
-﻿using EA.CommonLib.Messages;
+﻿using SharedLib.Domain.Messages;
 
 namespace CustomerService.Application.Commands.DeleteCustomer
 {

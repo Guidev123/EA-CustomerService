@@ -1,6 +1,6 @@
 ﻿using CustomerService.Domain.Enums;
 using CustomerService.Domain.ValueObjects;
-using EA.CommonLib.DomainObjects;
+using SharedLib.Domain.DomainObjects;
 
 namespace CustomerService.Domain.Entities
 {

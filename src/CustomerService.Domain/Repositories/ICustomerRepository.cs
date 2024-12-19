@@ -2,7 +2,7 @@
 
 namespace CustomerService.Domain.Repositories
 {
-    public interface ICustomerRepository : IDisposable
+    public interface ICustomerRepository
     {
         Task<List<Customer>> GetAllAsync();  
         Task<Customer?> GetByCpfAsync(string cpf);

@@ -9,19 +9,18 @@ namespace CustomerService.Infrastructure.Persistence.Repositories
         private readonly CustomerDbContext _context = context;
 
         public async Task<List<Customer>> GetAllAsync() =>
-            await _context.Customers.AsNoTracking().Where(x => !x.IsDeleted).ToListAsync();
+            await _context.Customers.AsNoTracking().ToListAsync();
 
         public async Task<Customer?> GetByCpfAsync(string cpf) =>
-            await _context.Customers.AsNoTracking().FirstOrDefaultAsync(x => x.Cpf.Number == cpf && !x.IsDeleted);
+            await _context.Customers.AsNoTracking().FirstOrDefaultAsync(x => x.Cpf.Number == cpf);
 
         public async Task<Customer?> GetByIdAsync(Guid id) =>
-            await _context.Customers.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id && !x.IsDeleted);
+            await _context.Customers.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 
         public async Task CreateAsync(Customer customer) =>  await _context.AddAsync(customer);
         public void UpdateAsync(Customer customer) => _context.Update(customer);
         public async Task AddAddressAsync(Address address) => await _context.AddAsync(address);
 
         public IUnitOfWork UnitOfWork => _context;
-        public void Dispose() => _context?.Dispose();
     }
 }

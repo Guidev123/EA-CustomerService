@@ -31,7 +31,7 @@ namespace CustomerService.Infrastructure.Persistence
                 property.SetColumnType("varchar(160)");
 
             foreach(var property in modelBuilder.Model.GetEntityTypes()
-                .SelectMany(e => e.GetForeignKeys())) property.DeleteBehavior = DeleteBehavior.ClientSetNull;
+                .SelectMany(e => e.GetForeignKeys())) property.DeleteBehavior = DeleteBehavior.Cascade;
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CustomerDbContext).Assembly);
         }

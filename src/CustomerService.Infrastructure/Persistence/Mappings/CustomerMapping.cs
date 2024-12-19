@@ -11,6 +11,9 @@ namespace CustomerService.Infrastructure.Persistence.Mappings
         {
             builder.ToTable("Customers");
             builder.HasKey(x => x.Id);
+
+            builder.HasQueryFilter(x => !x.IsDeleted);
+
             builder.Property(x => x.Name).IsRequired().HasColumnType("VARCHAR(150)");
             builder.OwnsOne(x => x.Cpf, tf =>
             {

@@ -1,4 +1,4 @@
-using CustomerService.API.Middlewares;
+using CustomerService.API.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 

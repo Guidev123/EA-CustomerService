@@ -5,7 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 
-namespace CustomerService.API.Middlewares
+namespace CustomerService.API.Configurations
 {
     public static class ApplicationConfig
     {

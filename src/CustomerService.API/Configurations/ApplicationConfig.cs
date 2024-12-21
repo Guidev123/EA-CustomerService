@@ -7,7 +7,7 @@ using System.Text;
 
 namespace CustomerService.API.Middlewares
 {
-    public static class ApplicationMiddlewares
+    public static class ApplicationConfig
     {
         public static void AddMiddlewares(this WebApplicationBuilder builder)
         {

@@ -17,7 +17,7 @@ namespace CustomerService.Infrastructure
 
         public static void AddRepositories(this IServiceCollection services)
         {
-            services.AddTransient<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
         }
 
         public static void ConfigureDbContext(this IServiceCollection services, IConfiguration configuration) =>

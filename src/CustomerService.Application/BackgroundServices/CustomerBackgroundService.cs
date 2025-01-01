@@ -1,11 +1,11 @@
 ﻿using CustomerService.Application.Commands.CreateCustomer;
 using CustomerService.Application.Commands.DeleteCustomer;
+using EA.IntegrationEvents.Integration;
+using EA.IntegrationEvents.Integration.DeletedUser;
+using EA.IntegrationEvents.Integration.RegisteredUser;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SharedLib.Domain.Mediator;
-using SharedLib.Domain.Messages.Integration;
-using SharedLib.Domain.Messages.Integration.DeletedUser;
-using SharedLib.Domain.Messages.Integration.RegisteredUser;
 using SharedLib.Domain.Responses;
 using SharedLib.MessageBus;
 
@@ -43,7 +43,7 @@ namespace CustomerService.Application.BackgroundServices
                 success = await mediator.SendCommand(clientCommand);
             }
 
-            return new ResponseMessage(success.Data!.ValidationResult!);
+            return new ResponseMessage(success.Data!.ValidationResult);
         }
 
         private async Task<ResponseMessage> DeleteCustomer(DeletedUserIntegrationEvent message)

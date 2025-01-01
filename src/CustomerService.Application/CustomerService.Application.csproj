@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\EA-IntegrationEvents\EA.IntegrationEvents\EA.IntegrationEvents.csproj" />
     <ProjectReference Include="..\..\..\SharedLib\src\SharedLib.MessageBus\SharedLib.MessageBus.csproj" />
     <ProjectReference Include="..\CustomerService.Domain\CustomerService.Domain.csproj" />
-    <ProjectReference Include="..\EA.IntegrationEvents\EA.IntegrationEvents.csproj" />
   </ItemGroup>
 
   <ItemGroup>

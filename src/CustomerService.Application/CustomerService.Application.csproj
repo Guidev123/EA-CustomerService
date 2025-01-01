@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\EA-IntegrationEvents\EA.IntegrationEvents\EA.IntegrationEvents.csproj" />
+    <ProjectReference Include="..\..\..\SharedLib\src\SharedLib.Domain\SharedLib.Domain.csproj" />
     <ProjectReference Include="..\..\..\SharedLib\src\SharedLib.MessageBus\SharedLib.MessageBus.csproj" />
     <ProjectReference Include="..\CustomerService.Domain\CustomerService.Domain.csproj" />
   </ItemGroup>

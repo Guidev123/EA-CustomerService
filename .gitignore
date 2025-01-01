@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /src/CustomerService.API/appsettings.json
 /src/EA.IntegrationEvents/EA.IntegrationEvents.csproj
+/src/EA.IntegrationEvents/EA.IntegrationEvents.csproj

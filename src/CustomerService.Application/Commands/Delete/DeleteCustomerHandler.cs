@@ -5,7 +5,7 @@ using MediatR;
 using SharedLib.Domain.Messages;
 using SharedLib.Domain.Responses;
 
-namespace CustomerService.Application.Commands.DeleteCustomer
+namespace CustomerService.Application.Commands.Delete
 {
     public class DeleteCustomerHandler(ICustomerRepository customerRepository)
                : CommandHandler, IRequestHandler<DeleteCustomerCommand, Response<DeleteCustomerCommand>>

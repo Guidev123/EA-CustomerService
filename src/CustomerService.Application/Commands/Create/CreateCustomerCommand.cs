@@ -1,6 +1,6 @@
 ﻿using SharedLib.Domain.Messages;
 
-namespace CustomerService.Application.Commands.CreateCustomer
+namespace CustomerService.Application.Commands.Create
 {
     public class CreateCustomerCommand : Command<CreateCustomerCommand>
     {

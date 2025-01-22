@@ -1,5 +1,5 @@
 ﻿using CustomerService.Application.Commands.AddAddress;
-using CustomerService.Application.Commands.CreateCustomer;
+using CustomerService.Application.Commands.Create;
 using CustomerService.Domain.Entities;
 
 namespace CustomerService.Application.Mappers

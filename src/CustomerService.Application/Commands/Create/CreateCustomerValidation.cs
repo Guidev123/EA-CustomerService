@@ -1,7 +1,7 @@
 ﻿using CustomerService.Domain.ValueObjects;
 using FluentValidation;
 
-namespace CustomerService.Application.Commands.CreateCustomer
+namespace CustomerService.Application.Commands.Create
 {
     public class CreateCustomerValidation : AbstractValidator<CreateCustomerCommand>
     {

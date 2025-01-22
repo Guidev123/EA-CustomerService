@@ -1,5 +1,5 @@
-﻿using CustomerService.Application.Commands.CreateCustomer;
-using CustomerService.Application.Commands.DeleteCustomer;
+﻿using CustomerService.Application.Commands.Create;
+using CustomerService.Application.Commands.Delete;
 using EA.IntegrationEvents.Integration;
 using EA.IntegrationEvents.Integration.DeletedUser;
 using EA.IntegrationEvents.Integration.RegisteredUser;

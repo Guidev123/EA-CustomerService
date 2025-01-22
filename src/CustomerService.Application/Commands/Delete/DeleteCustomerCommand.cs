@@ -1,6 +1,6 @@
 ﻿using SharedLib.Domain.Messages;
 
-namespace CustomerService.Application.Commands.DeleteCustomer
+namespace CustomerService.Application.Commands.Delete
 {
     public class DeleteCustomerCommand : Command<DeleteCustomerCommand>
     {

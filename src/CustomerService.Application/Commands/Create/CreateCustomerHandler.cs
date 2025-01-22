@@ -7,7 +7,7 @@ using MediatR;
 using SharedLib.Domain.Messages;
 using SharedLib.Domain.Responses;
 
-namespace CustomerService.Application.Commands.CreateCustomer
+namespace CustomerService.Application.Commands.Create
 {
     public class CreateCustomerHandler(ICustomerRepository customerRepository)
                : CommandHandler, IRequestHandler<CreateCustomerCommand, Response<CreateCustomerCommand>>
@@ -21,7 +21,7 @@ namespace CustomerService.Application.Commands.CreateCustomer
             var customer = request.MapToCustomer();
 
             var customerExists = await _customerRepository.GetByCpfAsync(customer.Cpf.Number);
-            if(customerExists is not null)
+            if (customerExists is not null)
             {
                 AddError(request.ValidationResult, ErrorMessages.CUSTOMER_ALREADY_EXISTS.GetDescription());
                 return new Response<CreateCustomerCommand>(request, 400, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult!));

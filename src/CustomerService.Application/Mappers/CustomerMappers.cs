@@ -9,8 +9,8 @@ namespace CustomerService.Application.Mappers
         public static Customer MapToCustomer(this CreateCustomerCommand command) =>
             new(command.Id, command.Name, command.Email, command.Cpf);
 
-        public static Address MapToAddress(this AddAddressCommand command) =>
-            new(command.CustomerId, command.Street, command.Number, command.AdditionalInfo,
+        public static Address MapToAddress(this AddAddressCommand command, Guid customerId) =>
+            new(customerId, command.Street, command.Number, command.AdditionalInfo,
                 command.Neighborhood, command.ZipCode, command.City,
                 command.State);
 

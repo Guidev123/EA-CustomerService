@@ -6,9 +6,6 @@ namespace CustomerService.Application.Commands.AddAddress
     {
         public AddAddressValidation()
         {
-            RuleFor(x => x.CustomerId)
-                .NotEmpty().WithMessage("Customer ID is required");
-
             RuleFor(x => x.Street)
                 .NotEmpty().WithMessage("Street is required")
                 .Length(5, 100).WithMessage("Street name must be between 5 and 100 characters");

@@ -9,12 +9,13 @@ namespace CustomerService.API.Configurations
 {
     public static class ApplicationConfig
     {
-        public static void AddMiddlewares(this WebApplicationBuilder builder)
+        public static void AddApplicationConfigurations(this WebApplicationBuilder builder)
         {
             builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddApplication(builder.Configuration);
             builder.AddDocumentationConfig();
             builder.AddJwtConfiguration();
+            builder.Services.AddHttpContextAccessor();
         }
 
         public static void AddDocumentationConfig(this WebApplicationBuilder builder)

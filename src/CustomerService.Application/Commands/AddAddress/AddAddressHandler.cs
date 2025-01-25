@@ -16,9 +16,8 @@ namespace CustomerService.Application.Commands.AddAddress
         public async Task<Response<AddAddressCommand>> Handle(AddAddressCommand request, CancellationToken cancellationToken)
         {
             if (!request.IsValid())
-            {
-                return new Response<AddAddressCommand>(request, 400, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult));
-            }
+                return new Response<AddAddressCommand>(false, 400, request,
+                           ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult));
 
             var address = request.MapToAddress();
 
@@ -26,7 +25,7 @@ namespace CustomerService.Application.Commands.AddAddress
             if (customerExists is null)
             {
                 AddError(request.ValidationResult, ErrorMessages.CUSTOMER_NOT_FOUND.GetDescription());
-                return new Response<AddAddressCommand>(request, 400, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult));
+                return new(false, 400, request, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult));
             }
 
             await _customerRepository.AddAddressAsync(address);
@@ -35,10 +34,10 @@ namespace CustomerService.Application.Commands.AddAddress
             if (!persistData)
             {
                 AddError(request.ValidationResult, ErrorMessages.FAIL_PERSIST_DATA.GetDescription());
-                return new Response<AddAddressCommand>(request, 400, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult));
+                return new(false, 400, request, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult));
             }
 
-            return new Response<AddAddressCommand>(request, 201, ErrorMessages.SUCCESS.GetDescription());
+            return new(true, 201, request, ErrorMessages.SUCCESS.GetDescription());
         }
     }
 }

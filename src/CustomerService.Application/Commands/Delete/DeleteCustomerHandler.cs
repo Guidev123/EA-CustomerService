@@ -17,7 +17,7 @@ namespace CustomerService.Application.Commands.Delete
             if (customer is null)
             {
                 AddError(request.ValidationResult, ErrorMessages.CUSTOMER_NOT_FOUND.GetDescription());
-                return new Response<DeleteCustomerCommand>(request, 400, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult));
+                return new(false, 404, request, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult));
             }
             customer.SetAsDeleted();
             _customerRepository.UpdateAsync(customer);
@@ -26,10 +26,10 @@ namespace CustomerService.Application.Commands.Delete
             if (!persistData)
             {
                 AddError(request.ValidationResult, ErrorMessages.FAIL_PERSIST_DATA.GetDescription());
-                return new Response<DeleteCustomerCommand>(request, 400, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult));
+                return new(false, 400, request, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult));
             }
 
-            return new Response<DeleteCustomerCommand>(request, 204, ErrorMessages.SUCCESS.GetDescription());
+            return new(true, 204, request, ErrorMessages.SUCCESS.GetDescription());
         }
     }
 }

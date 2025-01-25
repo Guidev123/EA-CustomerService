@@ -16,7 +16,7 @@ namespace CustomerService.Application.Commands.Create
         public async Task<Response<CreateCustomerCommand>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
         {
             if (!request.IsValid())
-                return new Response<CreateCustomerCommand>(request, 400, ErrorMessages.SUCCESS.GetDescription(), GetAllErrors(request.ValidationResult!));
+                return new(false, 400, request, ErrorMessages.SUCCESS.GetDescription(), GetAllErrors(request.ValidationResult!));
 
             var customer = request.MapToCustomer();
 
@@ -24,7 +24,7 @@ namespace CustomerService.Application.Commands.Create
             if (customerExists is not null)
             {
                 AddError(request.ValidationResult, ErrorMessages.CUSTOMER_ALREADY_EXISTS.GetDescription());
-                return new Response<CreateCustomerCommand>(request, 400, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult!));
+                return new(false, 400, request, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult!));
             }
 
             customer.AddEvent(new CreatedCustomerEvent(customer.Name, customer.Email.Address));
@@ -35,10 +35,10 @@ namespace CustomerService.Application.Commands.Create
             if (!persistData)
             {
                 AddError(request.ValidationResult, ErrorMessages.FAIL_PERSIST_DATA.GetDescription());
-                return new Response<CreateCustomerCommand>(request, 400, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult!));
+                return new(false, 400, request, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult!));
             }
 
-            return new Response<CreateCustomerCommand>(request, 201, ErrorMessages.SUCCESS.GetDescription());
+            return new(true, 201, request, ErrorMessages.SUCCESS.GetDescription());
         }
     }
 }

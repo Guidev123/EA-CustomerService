@@ -1,6 +1,7 @@
 ﻿using CustomerService.Domain.Entities;
 using CustomerService.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace CustomerService.Infrastructure.Persistence.Repositories
 {
@@ -20,6 +21,14 @@ namespace CustomerService.Infrastructure.Persistence.Repositories
         public async Task CreateAsync(Customer customer) =>  await _context.AddAsync(customer);
         public void UpdateAsync(Customer customer) => _context.Update(customer);
         public async Task AddAddressAsync(Address address) => await _context.AddAsync(address);
+
+        public async Task<Address?> GetAddressAsync(Guid customerId)
+            => await _context.Customers
+            .Select(x =>
+            new Address(x.Id, x.Address.Street, x.Address.Number,
+                x.Address.AdditionalInfo, x.Address.Neighborhood,
+                x.Address.ZipCode, x.Address.City, x.Address.State))
+            .FirstOrDefaultAsync(x => x.CustomerId == customerId);
 
         public IUnitOfWork UnitOfWork => _context;
     }

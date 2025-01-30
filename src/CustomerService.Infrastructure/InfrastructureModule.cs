@@ -28,6 +28,9 @@ namespace CustomerService.Infrastructure
         }
 
         public static void ConfigureDbContext(this IServiceCollection services, IConfiguration configuration) =>
-            services.AddDbContext<CustomerDbContext>(opt => opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<CustomerDbContext>(opt =>
+            opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
+            .LogTo(Console.WriteLine)
+            .EnableDetailedErrors());
     }
 }

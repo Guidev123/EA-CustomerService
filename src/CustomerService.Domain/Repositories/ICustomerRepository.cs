@@ -7,6 +7,7 @@ namespace CustomerService.Domain.Repositories
         Task<List<Customer>> GetAllAsync();  
         Task<Customer?> GetByCpfAsync(string cpf);
         Task<Customer?> GetByIdAsync(Guid id);
+        Task<Address?> GetAddressAsync(Guid customerId);
         Task CreateAsync(Customer customer);
         Task AddAddressAsync(Address address);
         void UpdateAsync(Customer customer);

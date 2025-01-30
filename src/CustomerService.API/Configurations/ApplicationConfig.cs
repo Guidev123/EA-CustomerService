@@ -3,6 +3,7 @@ using CustomerService.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SharedLib.Tokens.Configuration;
 using System.Text;
 
 namespace CustomerService.API.Configurations
@@ -59,26 +60,8 @@ namespace CustomerService.API.Configurations
 
         public static void AddJwtConfiguration(this WebApplicationBuilder builder)
         {
-            builder.Services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(x =>
-            {
-                x.RequireHttpsMetadata = true;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey
-                    (Encoding.ASCII.GetBytes(builder.Configuration["JsonWebTokenData:Secret"] ?? string.Empty)),
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidAudience = builder.Configuration["JsonWebTokenData:ValidAt"],
-                    ValidIssuer = builder.Configuration["JsonWebTokenData:Issuer"]
-                };
-            });
-            builder.Services.AddAuthorizationBuilder();
+            builder.Services.AddJwtConfiguration(builder.Configuration);
+            builder.Services.AddAuthorization();
 
         }
 

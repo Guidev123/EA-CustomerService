@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\SharedLib\src\SharedLib.Tokens\SharedLib.Tokens.csproj" />
     <ProjectReference Include="..\CustomerService.Application\CustomerService.Application.csproj" />
     <ProjectReference Include="..\CustomerService.Domain\CustomerService.Domain.csproj" />
     <ProjectReference Include="..\CustomerService.Infrastructure\CustomerService.Infrastructure.csproj" />

@@ -1,5 +1,6 @@
 ﻿using CustomerService.Application.Commands.AddAddress;
 using CustomerService.Application.Commands.Create;
+using CustomerService.Application.DTOs;
 using CustomerService.Domain.Entities;
 
 namespace CustomerService.Application.Mappers
@@ -14,5 +15,7 @@ namespace CustomerService.Application.Mappers
                 command.Neighborhood, command.ZipCode, command.City,
                 command.State);
 
+        public static AddressDTO MapFromAddress(this Address address) =>
+            new(address.Street, address.Number, address.AdditionalInfo, address.Neighborhood, address.ZipCode, address.City, address.State);
     }
 }

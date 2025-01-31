@@ -1,6 +1,7 @@
 ﻿using CustomerService.Application.Commands.AddAddress;
+using CustomerService.Application.DTOs;
+using CustomerService.Application.Mappers;
 using CustomerService.Application.Services;
-using CustomerService.Domain.Entities;
 using CustomerService.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using SharedLib.Domain.Mediator;
@@ -24,14 +25,14 @@ namespace CustomerService.API.Controllers
         [HttpGet("address")]
         public async Task<IResult> GetAddressAsync()
         {
-            var userId = await _user.GetUserIdAsync();
+            var userId = _user.GetUserId();
             if (!userId.HasValue || userId is null)
                 return TypedResults.BadRequest();
 
             var address = await _customerRepository.GetAddressAsync(userId.Value);
             return address is null
                 ? TypedResults.NotFound()
-                : TypedResults.Ok(new Response<Address>(address, 200));
+                : TypedResults.Ok(new Response<AddressDTO>(address.MapFromAddress(), 200, "Valid Operation"));
         }
     }
 }

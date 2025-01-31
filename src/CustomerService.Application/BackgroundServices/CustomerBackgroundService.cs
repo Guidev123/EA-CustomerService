@@ -66,7 +66,7 @@ namespace CustomerService.Application.BackgroundServices
         private async Task<ResponseMessage> AddAddress(ReceivedAddressIntegrationEvent message)
         {
             var clientCommand = new AddAddressCommand(message.Street, message.Number, message.AdditionalInfo,
-                                message.Neighborhood, message.ZipCode, message.State, message.City);
+                                message.Neighborhood, message.ZipCode, message.State, message.City, message.CustomerId);
 
             Response<AddAddressCommand> success;
             using (var scope = _serviceProvider.CreateScope())

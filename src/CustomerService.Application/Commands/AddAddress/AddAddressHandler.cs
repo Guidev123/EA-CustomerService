@@ -19,10 +19,11 @@ namespace CustomerService.Application.Commands.AddAddress
         {
             if (!request.IsValid())
                 return new(request, 400, ErrorMessages.ERROR.GetDescription(), GetAllErrors(request.ValidationResult));
+            var customerId = _userService.GetUserId();
+            if (!customerId.HasValue || customerId is null)
+                return new(null, 400, ErrorMessages.CUSTOMER_NOT_FOUND.GetDescription());
 
-            if(!request.CustomerId.HasValue || request.CustomerId is null) GetCustomerId(request);
-
-            var address = request.MapToAddress(request.CustomerId!.Value);
+            var address = request.MapToAddress(customerId.Value);
 
             var customerExists = await _customerRepository.GetByIdAsync(address.CustomerId);
             if (customerExists is null)
@@ -41,16 +42,6 @@ namespace CustomerService.Application.Commands.AddAddress
             }
 
             return new(request, 201, ErrorMessages.SUCCESS.GetDescription());
-        }
-
-        private Response<Guid?> GetCustomerId(AddAddressCommand request)
-        {
-            var userId = _userService.GetUserId();
-            if (userId is null)
-                return new(null, 404, ErrorMessages.ERROR.GetDescription());
-
-            request.SetCustomerId(userId.Value);
-            return new(userId, 200);
         }
     }
 }

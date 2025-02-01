@@ -6,9 +6,8 @@ namespace CustomerService.Application.Commands.AddAddress
     {
         public AddAddressCommand(string street, string number,
                                  string additionalInfo, string neighborhood,
-                                 string zipCode, string state, string city, Guid? customerId = null)
+                                 string zipCode, string state, string city)
         {
-            CustomerId = customerId;
             AggregateId = Guid.NewGuid();
             Street = street;
             Number = number;
@@ -18,7 +17,6 @@ namespace CustomerService.Application.Commands.AddAddress
             State = state;
             City = city;
         }
-        public Guid? CustomerId { get; private set; }
         public string Street { get; private set; }
         public string Number { get; private set; }
         public string AdditionalInfo { get; private set; }
@@ -31,7 +29,5 @@ namespace CustomerService.Application.Commands.AddAddress
             ValidationResult = new AddAddressValidation().Validate(this);
             return ValidationResult.IsValid;
         }
-
-        public void SetCustomerId(Guid id) => CustomerId = id;
     }
 }
